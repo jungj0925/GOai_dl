@@ -13,7 +13,7 @@ class Move():
         this.is_resign = is_resign
 
     @classmethod
-    def play(cls, point):
+    def play(cls, point): #cls is a reference to the class itself
         return Move(point=point)
         #places a stone on the board
     
