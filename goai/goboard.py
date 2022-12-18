@@ -58,10 +58,10 @@ class GoString():
         return len(this.liberties)
 
     def __eq__(this, other):
-        return isinstance(other, GoString) and \
-            this.color == other.color and \
-            this.stones == other.stones and \
-            this.liberties == other.liberties
+        return isinstance(other, GoString) and this.color == other.color and this.stones == other.stones and this.liberties == other.liberties
+
+    def __deepcopy__(this, memodict={}):
+        return GoString(this.color, this.stones, copy.deepcopy(this.liberties))
 
 #A Go board is represented by a dictionary of points to strings
 class Board():
