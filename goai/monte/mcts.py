@@ -1,8 +1,13 @@
 import random
+import math
 
 from goai import agent
 from goai.gotypes import Player
-from goai.utils import point_from_coords
+from goai.agent import naive
+
+def uct_score(parent_rollouts, child_rollouts, win_pct, temperature):
+    exploration = math.sqrt(math.log(parent_rollouts) / child_rollouts)
+    return win_pct + temperature * exploration
 
 class MCTSNode(object):
     def __init__(this, game_state, parent=None, move=None):
@@ -39,7 +44,11 @@ class MCTSNode(object):
     def winning_frac(this, player):
         return float(this.win_counts[player]) / float(this.num_rollouts)
 
-class MCTSAgent(agent.Agent):
+class MonteAgent():
+    def __init__(this, num_rounds, temperature):
+        this.num_rounds = num_rounds
+        this.temperature = temperature
+
     def select_move(this, game_state):
         root = MCTSNode(game_state)
         for i in range(this.num_rounds):
@@ -59,8 +68,34 @@ class MCTSAgent(agent.Agent):
         best_move = None
         best_pct = -1.0
         for child in root.children:
-            child_pct = child.winning_pct(game_state.next_player)
+            child_pct = child.winning_frac(game_state.next_player)
             if child_pct > best_pct:
                 best_pct = child_pct
                 best_move = child.move
             return best_move
+
+    def select_child(this, node):
+        total_rollouts = sum(child.num_rollouts for child in node.children)
+
+        best_score = -1
+        best_child = None
+        for child in node.children:
+            score = uct_score(total_rollouts, child.num_rollouts,
+                                child.winning_frac(node.game_state.next_player),
+                                this.temperature)
+
+            if score > best_score:
+                best_score = score
+                best_child = child
+        return best_child
+
+    @staticmethod
+    def simulate_random_game(game):
+        bots = {
+            Player.black: agent.naive.RandomBot(),
+            Player.white: agent.naive.RandomBot(),
+        }
+        while not game.is_over():
+            next_move = bots[game.next_player].select_move(game)
+            game = game.apply_move(next_move)
+        return game.winner()

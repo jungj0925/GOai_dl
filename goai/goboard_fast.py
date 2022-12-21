@@ -1,5 +1,4 @@
 ######### THIS CODE IS FROM MAXPUMPERLA IN GITHUB #########
-
 import copy
 from goai.gotypes import Player, Point
 from goai.scoring import compute_game_result

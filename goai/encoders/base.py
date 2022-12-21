@@ -22,11 +22,15 @@ class Encoder:
         raise NotImplementedError()
 
     # Shape of the encoded board structure
-    def shape(this):
+    def shape(this): 
         raise NotImplementedError()
 
 def get_encoder_by_name(name, board_size):
+    if isinstance(board_size, int):
+        board_size = (board_size, board_size)
+        # if board_size is an int, make it a tuple
     module = importlib.import_module('goai.encoders.' + name)
-    #Get the class from the module
-    #The class name is the same as the module name
-    #The class name is the
+    # import the module from the encoders folder
+    constructor = getattr(module, 'create') 
+    # Each encoder implementation will have to provide a "create" function that provides an instance
+    return constructor(board_size)

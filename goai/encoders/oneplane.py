@@ -1,7 +1,7 @@
 import numpy as np
 
 from goai.encoders.base import Encoder
-from goai.goboard import Point
+from goai.gotypes import Point
 
 class OnePlaneEncoder(Encoder):
     def __init__(this, board_size):
@@ -42,3 +42,12 @@ class OnePlaneEncoder(Encoder):
         row = index // this.board_width + 1
         col = index % this.board_width + 1
         return Point(row=row + 1, col=col + 1)
+
+    def num_points(this):
+        return this.board_width * this.board_height
+
+    def shape(this):
+        return this.num_planes, this.board_height, this.board_width
+
+def create(board_size):
+    return OnePlaneEncoder(board_size)

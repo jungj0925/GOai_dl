@@ -1,6 +1,6 @@
 from goai import agent
 from goai import gotypes
-from goai import goboard
+from goai import goboard_fast as goboard
 from goai.agent import naive
 from goai.utils import print_board, print_move
 import time
