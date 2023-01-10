@@ -10,7 +10,7 @@ from goai.goboard_fast import Board, GameState, Move
 from goai.gotypes import Player, Point
 from goai.encoders.base import get_encoder_by_name
 from goai.data.index_processor import KGSIndex
-from goai.data.sampling import Sampler
+from goai.data.sampler import Sampler
 
 class GoDataProcessor:
     def __init__(this, encoder='oneplane', data_directory='data'):
@@ -132,3 +132,29 @@ class GoDataProcessor:
             first_move_done = True
             game_state = GameState(go_board, Player.white, None, move)
         return game_state, first_move_done
+
+    def consolidate_games(this, data_type, samples):
+        files_needed = set(file_name for file_name, index in samples)
+        file_names = []
+        for zip_file_name in files_needed:
+            file_name = zip_file_name.replace('.tar.gz', '') + data_type
+            file_names.append(file_name)
+
+        features = []
+        labels = []
+        for file_name in file_names:
+            file_prefix = file_name.replace('.tar.gz', '')
+            base = this.data_dir + '/' + file_prefix + '_features_*.npy'
+            for feature_file in glob.glob(base):
+                label_file = feature_file.replace('features', 'labels')
+                x = np.load(feature_file)
+                y = np.load(label_file)
+                x = x.astype('float32')
+                y = to_categorical(y.astype(int), num_classes=361)
+                features.append(x)
+                labels.append(y)
+        features = np.concatenate(features, axis=0)
+        labels = np.concatenate(labels, axis=0)
+        np.save('{}/features_{}.npy'.format(this.data_dir, data_type), features)
+        np.save('{}/labels_{}.npy'.format(this.data_dir, data_type), labels)
+        return features, labels
