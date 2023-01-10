@@ -11,7 +11,7 @@ import multiprocessing
 from os import sys
 from keras.utils import to_categorical
 
-from goai.gosgf import Sgf_game
+from goai.gosgf.sgf import Sgf_game
 from goai.goboard_fast import Board, GameState, Move
 from goai.gotypes import Player, Point
 from goai.data.index_processor import KGSIndex
