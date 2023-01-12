@@ -6,7 +6,7 @@ class DataGenerator:
     def __init__(this, data_dir, samples):
         this.data_dir = data_dir
         this.samples = samples
-        this.files = set(file_name for file_name, i in samples)
+        this.files = set(file_name for file_name, index in samples)
         this.num_samples = None
 
     def get_num_samples(this, batch_size=128, num_classes=19*19):

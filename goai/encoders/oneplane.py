@@ -28,9 +28,9 @@ class OnePlaneEncoder(Encoder):
                 if go_string is None:
                     continue
                 if go_string.color == next_player:
-                    board_matrix[0][r][i] = 1
+                    board_matrix[0, r, i] = 1
                 else:    
-                    board_matrix[0][r][i] = -1
+                    board_matrix[0, r, i] = -1
 
         return board_matrix
 
@@ -39,8 +39,8 @@ class OnePlaneEncoder(Encoder):
         return this.board_width*(point.row - 1)+(point.col - 1) # integer index
 
     def decode_point_index(this, index):
-        row = index // this.board_width + 1
-        col = index % this.board_width + 1
+        row = index // this.board_width
+        col = index % this.board_width
         return Point(row=row + 1, col=col + 1)
 
     def num_points(this):

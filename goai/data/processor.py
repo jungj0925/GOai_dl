@@ -5,7 +5,7 @@ import glob
 import shutil
 import numpy as np
 from keras.utils import to_categorical
-from goai.gosgf import Sgf_game
+from goai.gosgf.sgf import Sgf_game
 from goai.goboard_fast import Board, GameState, Move
 from goai.gotypes import Player, Point
 from goai.encoders.base import get_encoder_by_name

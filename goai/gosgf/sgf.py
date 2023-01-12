@@ -9,8 +9,8 @@ import datetime
 
 import six
 
-from . import sgf_grammar
-from . import sgf_properties
+from goai.gosgf import sgf_grammar
+from goai.gosgf import sgf_properties
 
 __all__ = [
     'Node',
@@ -416,6 +416,14 @@ class _Unexpanded_root_tree_node(_Root_tree_node):
 
 
 class Sgf_game:
+
+    def __init__(self, *args, **kwargs):
+        self.root = _Root_tree_node({}, self)
+        self.root.set_raw(b'FF', b"4")
+        self.root.set_raw(b'GM', b"1")
+        self.root.set_raw(b'SZ', str(self.size).encode(self.presenter.encoding))
+        # Read the encoding back so we get the normalised form
+        self.root.set_raw(b'CA', self.presenter.encoding.encode('ascii'))
     """An SGF game tree.
     The complete game tree is represented using Tree_nodes. The various methods
     which return Tree_nodes will always return the same object for the same
@@ -443,13 +451,6 @@ class Sgf_game:
         game.presenter = sgf_properties.Presenter(size, encoding)
         return game
 
-    def __init__(self, *args, **kwargs):
-        self.root = _Root_tree_node({}, self)
-        self.root.set_raw(b'FF', b"4")
-        self.root.set_raw(b'GM', b"1")
-        self.root.set_raw(b'SZ', str(self.size).encode(self.presenter.encoding))
-        # Read the encoding back so we get the normalised form
-        self.root.set_raw(b'CA', self.presenter.encoding.encode('ascii'))
 
     @classmethod
     def from_coarse_game_tree(cls, coarse_game, override_encoding=None):

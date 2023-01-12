@@ -5,13 +5,22 @@ def layers(input_shape):
     return [
         #Using zero padding layers to enlarge input images
         ZeroPadding2D(padding=3, input_shape=input_shape, data_format='channels_first'),
-        Conv2D(48, (7, 7), data_format='channels_first'), Activation('relu'),
+        Conv2D(48, (7, 7), data_format='channels_first'), 
+        Activation('relu'),
+        
         ZeroPadding2D(padding=2, data_format='channels_first'),
-        Conv2D(32, (5, 5), data_format='channels_first'), Activation('relu'),
+        Conv2D(32, (5, 5), data_format='channels_first'), 
+        Activation('relu'),
+
         ZeroPadding2D(padding=2, data_format='channels_first'),
-        Conv2D(32, (5, 5), data_format='channels_first'), Activation('relu'),
-        Conv2D(32, (5, 5), data_format='channels_first'), Activation('relu'),
+        Conv2D(32, (5, 5), data_format='channels_first'), 
+        Activation('relu'),
+
         ZeroPadding2D(padding=2, data_format='channels_first'),
-        Conv2D(32, (5, 5), data_format='channels_first'), Activation('relu'),
-        Flatten(), Dense(512), Activation('relu'),
+        Conv2D(32, (5, 5), data_format='channels_first'), 
+        Activation('relu'),
+
+        Flatten(), Dense(512), Activation('relu')
     ]
+
+# layers returns a list of Keras layers that we can use to add to the Sequential model

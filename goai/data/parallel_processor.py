@@ -8,7 +8,8 @@ import gzip
 import shutil
 import numpy as np
 import multiprocessing
-from os import sys
+from os import path
+import sys
 from keras.utils import to_categorical
 
 from goai.gosgf.sgf import Sgf_game
