@@ -31,10 +31,8 @@ if __name__ == '__main__':
     batch_size = 128
     model.fit(
         generator.generate(batch_size, classes),
-        epochs=5, steps_per_epoch = generator.get_num_samples() / batch_size,
-        validation_data = test_generator.generate(batch_size, classes),
-        validation_steps = test_generator.get_num_samples() / batch_size,
-        callbacks = [ModelCheckpoint('../epoch_{epoch}.h5')]
+        epochs=5,
+        validation_data = test_generator.generate(batch_size, classes)
     )
     model.evaluate(
         test_generator.generate(batch_size, classes),
