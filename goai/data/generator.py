@@ -20,13 +20,14 @@ class DataGenerator:
 
     def _generate(this, batch_size, num_classes):
         for zip_file_name in this.files:
-            file_name = zip_file_name.replace('tar.gz', '') + 'train'
+            file_name = zip_file_name.replace('.tar.gz', '') + 'train'
             base = this.data_dir + '/' + file_name + '_features_*.npy'
             for feature_file in glob.glob(base):
                 label_file = feature_file.replace('features', 'labels')
-                x = np.load(feature_file).astype('float32')
+                x = np.load(feature_file)
                 y = np.load(label_file)
-                y = to_categorical(y.astype(int), num_classes=num_classes)
+                x = x.astype('float32')
+                y = to_categorical(y.astype(int), num_classes)
                 while x.shape[0] >= batch_size:
                     x_batch, x = x[:batch_size], x[batch_size:]
                     y_batch, y = y[:batch_size], y[batch_size:]
