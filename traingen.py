@@ -25,16 +25,16 @@ def main():
         model.add(layer)
     model.add(Dense(classes, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=['accuracy'])
-    epochs = 5
+    epochs = 10
     batch_size = 128
     model.fit(generator.generate(batch_size, classes),  # <1>
                         epochs=epochs,
-                        steps_per_epoch=generator.get_num_samples() / batch_size,
+                        steps_per_epoch=generator.get_num_samples(),
                         validation_data=test_generator.generate(batch_size, classes),
-                        validation_steps=test_generator.get_num_samples() / batch_size,
+                        validation_steps=test_generator.get_num_samples(),
                         callbacks=[ModelCheckpoint('./checkpoints/small_model_epoch_{epoch}.h5')])
 
-    model.evaluate(test_generator.generate(batch_size, classes), steps=test_generator.get_num_samples() / batch_size)
+    model.evaluate(test_generator.generate(batch_size, classes), steps=test_generator.get_num_samples())
 
 if __name__ == '__main__':
     main()
