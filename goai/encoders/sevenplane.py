@@ -27,3 +27,20 @@ class SevenPlaneEncoder(Encoder):
                     color_plane = base_plane[go_string.color]
                     board_tensor[color_plane + liberty_plane][i][j] = 1
         return board_tensor
+
+    def encode_point(this, point):
+        return this.board_width * (point.row - 1) + (point.col - 1)
+
+    def decode_point_index(this, index):
+        row = index // this.board_width + 1
+        col = index % this.board_width + 1
+        return Point(row = row + 1, col = col + 1)
+
+    def num_points(this):
+        return this.board_width * this.board_height
+
+    def shape(this):
+        return this.num_planes, this.board_height, this.board_width
+
+def create(board_size):
+    return SevenPlaneEncoder(board_size)
