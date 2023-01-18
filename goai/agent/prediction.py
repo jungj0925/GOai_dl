@@ -4,7 +4,7 @@ from goai.agent.base import Agent
 from goai.agent.helpers import is_point_an_eye
 from goai.gotypes import Point
 from goai import encoders
-from goai import goboard_fast as goboard
+from goai import goboard
 from goai import kerasGo
 
 class DeepLearningAgent(Agent):
@@ -41,3 +41,16 @@ class DeepLearningAgent(Agent):
         h5file['encoder'].attrs['board_height'] = this.encoder.board_height
         h5file.create_group('model')
         kerasGo.save_model_to_hdf5_group(this.model, h5file['model'])
+
+    def load_prediction_agent(h5file):
+        model = kerasGo.load_model_from_hdf5_group(h5file['model'])
+        encoder_name = h5file['encoder'].attrs['name']
+        if not isinstance(encoder_name, str):
+            encoder_name = encoder_name.decode('ascii')
+        board_width = h5file['encoder'].attrs['board_width']
+        board_height = h5file['encoder'].attrs['board_height']
+        encoder = encoders.get_encoder_by_name(
+        encoder_name, (board_width, board_height))
+        return DeepLearningAgent(model, encoder)
+
+    

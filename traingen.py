@@ -4,7 +4,7 @@ from goai.encoders.oneplane import OnePlaneEncoder
 from goai.network import small
 from keras.models import Sequential
 from keras.layers.core import Dense
-from keras.callbacks import ModelCheckpoint  # <1>
+from keras.callbacks import ModelCheckpoint 
 
 def main():
 

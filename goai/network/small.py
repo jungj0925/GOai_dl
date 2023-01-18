@@ -23,4 +23,4 @@ def layers(input_shape):
         Flatten(), Dense(512), Activation('relu')
     ]
 
-# layers returns a list of Keras layers that we can use to add to the Sequential model
+# layers returns a list of Keras layers that we can use to add to    the Sequential model
